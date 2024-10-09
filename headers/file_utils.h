@@ -1,6 +1,6 @@
 #include <stddef.h>
 #include <unistd.h>
-
+#define FPATH_SIZE 100
 
 int open_file(const char *filename, int flags);
 void read_file(int fd, char *buffer, size_t size);

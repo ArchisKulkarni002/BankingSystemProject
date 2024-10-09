@@ -1,5 +1,6 @@
 #include "headers/customer.h"
 #include "headers/employee.h"
+#include "headers/transactions.h"
 #include<string.h>
 #include<stdio.h>
 
@@ -13,6 +14,9 @@ int main(){
 
     // add_new_customer(c);
 
-    c=read_customer(10);
-    printf("%s",c.username);
+    transfer_funds(10, 11, 50);
+    print_transaction_history(10);
+    print_transaction_history(11);
+    printf("10 balance: %f\n", view_balance(10));
+    printf("11 balance: %f\n", view_balance(11));
 }

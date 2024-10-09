@@ -13,6 +13,8 @@ void employee_login(char* username, char* password);
 void add_new_customer(Customer new_customer);
 void modify_customer_details(int customer_id, Customer updated_customer);
 void process_loan_application(int loan_id, int approve);
-void view_customer_transactions(int customer_id);
+Employee read_employee(int id);
+void write_employee(Employee employee);
+void get_employee_file(int id, char* filepath, int size);
 
 #endif // EMPLOYEE_H
