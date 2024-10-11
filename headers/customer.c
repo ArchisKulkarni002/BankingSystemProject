@@ -1,6 +1,7 @@
 #include "customer.h"
 #include "transactions.h"
 #include "loans.h"
+#include "feedback.h"
 #include "file_utils.h"
 #include<fcntl.h>
 #include<stdio.h>
@@ -64,8 +65,12 @@ void apply_loan(int customer_id, float loan_amount){
     loan.status=0;
 }
 
-void submit_feedback(int customer_id, char* feedback){
-    
+void submit_feedback(int customer_id, int feedback_id, char* feedback_msg){
+    Feedback feedback;
+    feedback.feedback_id=feedback_id;
+    feedback.customer_id = customer_id;
+    snprintf(feedback.feedback_msg, FDBACK_SIZE, "%s", feedback_msg);
+    write_feedback(feedback_id, feedback);
 }
 
 Customer read_customer(int id){

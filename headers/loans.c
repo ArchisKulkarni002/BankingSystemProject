@@ -1,6 +1,7 @@
 #include "loans.h"
 #include "file_utils.h"
 #include <fcntl.h>
+#include <stdio.h>
 
 void update_status(int loan_id, int status){
     Loan loan= read_loan(loan_id);
@@ -32,7 +33,7 @@ void write_loan(int loan_id, Loan loan){
     char filepath[FPATH_SIZE];
     get_loan_file(loan_id, filepath, sizeof(filepath));
 
-    int fd = open_file(filepath, O_RDONLY|O_CREAT);   
+    int fd = open_file(filepath, O_WRONLY|O_CREAT);   
 
     write_file(fd, (char*)&loan, sizeof(loan));
 }
