@@ -14,6 +14,7 @@ void record_transaction(Transaction transaction){
         int fd1 = open_file(filepath1, O_WRONLY | O_APPEND | O_CREAT);
 
         write_file(fd1, (char*)&transaction, sizeof(Transaction));
+        close_file(fd1);
     }
 
     else{
@@ -34,6 +35,9 @@ void record_transaction(Transaction transaction){
 
         transaction.type=-1;
         write_file(fd2, (char*)&transaction, sizeof(Transaction));
+
+        close_file(fd1);
+        close_file(fd2);
     }
 
     
@@ -69,6 +73,8 @@ void print_transaction_history(int customer_id){
         
         
     }
+
+    close_file(fd);
 }
 
 void get_transactions_file(int id, char* filepath, int size){

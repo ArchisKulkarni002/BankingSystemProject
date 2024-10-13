@@ -27,6 +27,8 @@ Loan read_loan(int loan_id){
     Loan loan;
     read_file(fd, (char*)&loan, sizeof(loan));
 
+    close_file(fd);
+
     return loan;
 }
 void write_loan(int loan_id, Loan loan){
@@ -36,6 +38,8 @@ void write_loan(int loan_id, Loan loan){
     int fd = open_file(filepath, O_WRONLY|O_CREAT);   
 
     write_file(fd, (char*)&loan, sizeof(loan));
+
+    close_file(fd);
 }
 void get_loan_file(int id, char* filepath, int size){
     snprintf(filepath, size, "loans/%d", id);

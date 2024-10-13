@@ -1,4 +1,5 @@
 #include "menus.h"
+#include "file_utils.h"
 #include<stdio.h>
 #include <ctype.h>
 
@@ -29,8 +30,13 @@ void print_underline(int counter){
 }
 
 // LOGIN SCREENS
-void print_login_prompt(){
-    print_subheading("Login screen, enter you id and password.");
+void print_prelogin_prompt(){
+    print_subheading("Who are you logging in as?");
+    printf("1.Customer\n");
+    printf("2.Employee\n");
+    printf("3.Manager\n");
+    printf("4.Admin\n");
+    printf("Enter your choice:");
 }           
 void print_login_success(char* role){
     printf("Logged in as %s.\n", role);
@@ -55,6 +61,7 @@ void print_customer_menu(){
     printf("8.View Transaction History    \n");
     printf("9.Logout\n");
     printf("10.Exit\n");
+    printf("Enter your choice: ");
 }          
 void print_employee_menu(){
     print_heading("Employee Menu");
@@ -86,3 +93,12 @@ void print_admin_menu(){
     printf("5.Logout\n");
     printf("6.Exit\n");
 }             
+
+
+void log_info(char* info){
+    if (LOGGING==1)
+    {
+        printf("LOG: %s\n", info);
+    }
+    
+}

@@ -36,6 +36,8 @@ Employee read_employee(int id){
     Employee employee;
     read_file(fd, (char*)&employee, sizeof(Employee));
 
+    close_file(fd);
+
     return employee;
 }
 void write_employee(Employee employee){
@@ -45,6 +47,7 @@ void write_employee(Employee employee){
     int fd = open_file(filepath, O_WRONLY|O_CREAT);
 
     write_file(fd, (char*)&employee, sizeof(Employee));
+    close_file(fd);
 }
 
 void get_employee_file(int id, char* filepath, int size){

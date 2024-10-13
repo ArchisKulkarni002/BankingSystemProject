@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "customer.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "menus.h": "c"
     }
 }
