@@ -48,22 +48,22 @@ void customer_login(){
             case 2:
                 float deposit;
                 printf("Enter amount to deposit: ");
-                scanf("%f",deposit);
+                scanf("%f",&deposit);
                 deposit_money(customer.id,deposit);
                 break;
             case 3:
                 float withdraw;
                 printf("Enter amount to withdraw: ");
-                scanf("%f",withdraw);
+                scanf("%f",&withdraw);
                 withdraw_money(customer.id,withdraw);
                 break;
             case 4:
                 float amount;
                 int rec_id;
                 printf("Enter amount to transfer: ");
-                scanf("%f",amount);
+                scanf("%f",&amount);
                 printf("Enter account to transfer to: ");
-                scanf("%d",rec_id);
+                scanf("%d",&rec_id);
                 transfer_funds(customer.id, rec_id,amount);
                 break;
             case 5:

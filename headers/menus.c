@@ -29,6 +29,10 @@ void print_underline(int counter){
     printf("\n\n");
 }
 
+void print_status(char* message){
+    printf("** %s **", message);
+}
+
 // LOGIN SCREENS
 void print_prelogin_prompt(){
     print_subheading("Who are you logging in as?");
@@ -67,20 +71,19 @@ void print_employee_menu(){
     print_heading("Employee Menu");
     printf("1.Add New Customer  \n");
     printf("2.Modify Customer Details \n");
-    printf("3.Process Loan Applications \n");
-    printf("4.Approve/Reject Loans \n");
-    printf("5.View Assigned Loan Applications  \n");
-    printf("6.View Customer Transactions   \n");
-    printf("7.Change Password    \n");
-    printf("8.Logout\n");
-    printf("9.Exit\n");
+    printf("3.Approve/Reject Loans \n");
+    printf("4.View Assigned Loan Applications  \n");
+    printf("5.View Customer Transactions   \n");
+    printf("6.Change Password\n");
+    printf("7.Logout\n");
+    printf("8.Exit\n");
 }          
 void print_manager_menu(){
     print_heading("Manager Menu");
     printf("1.Activate/Deactivate Customer Accounts  \n");
     printf("2.Assign Loan Application Processes to Employees \n");
     printf("3.Review Customer Feedback \n");
-    printf("4.Change Password    \n");
+    printf("4.Change Password\n");
     printf("5.Logout\n");
     printf("6.Exit\n");
 }           

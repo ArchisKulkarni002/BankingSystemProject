@@ -2,6 +2,11 @@
     "files.associations": {
         "customer.h": "c",
         "fcntl.h": "c",
-        "menus.h": "c"
+        "menus.h": "c",
+        "employee.h": "c",
+        "loans.h": "c",
+        "transactions.h": "c",
+        "manager.h": "c",
+        "stdio.h": "c"
     }
 }

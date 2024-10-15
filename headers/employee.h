@@ -9,7 +9,7 @@ typedef struct{
     int active_status;
 }Employee;
 
-void employee_login(char* username, char* password);
+void employee_login();
 void add_new_customer(Customer new_customer);
 void modify_customer_details(int customer_id, Customer updated_customer);
 void process_loan_application(int loan_id, int approve);

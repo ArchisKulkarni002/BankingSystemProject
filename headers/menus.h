@@ -4,6 +4,7 @@
 void print_heading(char* heading);
 void print_subheading(char* heading);
 void print_underline(int counter);
+void print_status(char* message);
 
 void print_prelogin_prompt();           
 void print_login_success(char* role);
