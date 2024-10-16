@@ -4,6 +4,7 @@
 #include "menus.h"
 #include "transactions.h"
 #include "loans.h"
+#include "counters.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -42,7 +43,15 @@ void employee_login(){
             switch (choice)
             {
             case 1:
-                printf("Funcaionality not done lolz!");
+                Customer new_customer; 
+                print_subheading("Fill the details for new customer");
+                printf("Enter username: ");
+                scanf("%s",new_customer.username);
+                printf("Enter password: ");
+                scanf("%s",new_customer.password);
+                new_customer.balance=0;
+                new_customer.active_status=1;
+                add_new_customer(new_customer);
                 break;
             case 2:
                 printf("Funcaionality not done lolz!");
@@ -114,13 +123,19 @@ void employee_login(){
 }
 void add_new_customer(Customer new_customer){
     char filepath[FPATH_SIZE];
+    
+    int new_customer_id = get_new_count(C_CUSTOMER);
+    new_customer.id=new_customer_id;
+
     get_customer_file(new_customer.id, filepath, sizeof(filepath));
 
     if (access(filepath, F_OK)==0){
         perror("The customer with that id already exists");
     }else{
         write_customer(new_customer);
+        printf("New customer created with ID: %d\n", new_customer_id);
     }
+
     
 }
 void modify_customer_details(int customer_id, Customer updated_customer){    

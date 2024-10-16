@@ -39,6 +39,7 @@ int get_new_count(int id){
     read_file(fd, (char*)&counter, sizeof(int));
 
     counter++;
+    lseek(fd, 0, SEEK_SET);
     write_file(fd, (char*)&counter, sizeof(int));
 
     close_file(fd);
