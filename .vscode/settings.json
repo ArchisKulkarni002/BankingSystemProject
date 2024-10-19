@@ -7,6 +7,9 @@
         "loans.h": "c",
         "transactions.h": "c",
         "manager.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "string.h": "c",
+        "in.h": "c",
+        "admin.h": "c"
     }
 }

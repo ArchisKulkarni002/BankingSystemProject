@@ -9,7 +9,6 @@ typedef struct{
     int active_status;
 }Admin;
 
-void admin_login();
 void add_new_employee(Employee new_employee);
 void modify_user_details(int user_id, char* new_username, char* new_password);
 void manage_user_roles(int user_id, char* new_role);

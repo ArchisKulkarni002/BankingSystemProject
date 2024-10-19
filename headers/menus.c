@@ -6,7 +6,7 @@
 void print_heading(char* heading){
     // make the heading to upper case
     int counter=0;
-    printf("|  ");
+    printf("\n|  ");
     for (int i = 0; heading[i] != '\0'; i++) {
         printf("%c", toupper((unsigned char)heading[i]));
         counter++;
@@ -30,7 +30,7 @@ void print_underline(int counter){
 }
 
 void print_status(char* message){
-    printf("** %s **", message);
+    printf("** %s **\n", message);
 }
 
 // LOGIN SCREENS

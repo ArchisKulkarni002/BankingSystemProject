@@ -11,7 +11,6 @@ typedef struct {
 }Customer;
 
 
-void customer_login();
 float view_balance(int customer_id);
 void deposit_money(int customer_id, float amount);
 void withdraw_money(int customer_id, float amount);

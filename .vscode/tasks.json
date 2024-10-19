@@ -2,13 +2,30 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build C Project",
+            "label": "Build Client",
             "type": "shell",
             "command": "gcc",
             "args": [
                 "-o",
-                "run",                   // Name of the output executable
-                "${workspaceFolder}/*.c",  // Path to main files
+                "client.o",                   // Name of the output executable
+                "${workspaceFolder}/client_main.c",  // Path to main files
+                "${workspaceFolder}/headers/*.c", // Include any C files in headers if applicable
+                "-I${workspaceFolder}/headers"   // Include path for header files
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Build Server",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "-o",
+                "server.o",                   // Name of the output executable
+                "${workspaceFolder}/server_main.c",  // Path to main files
                 "${workspaceFolder}/headers/*.c", // Include any C files in headers if applicable
                 "-I${workspaceFolder}/headers"   // Include path for header files
             ],
