@@ -8,7 +8,7 @@
 #include <string.h>
 #include <fcntl.h>
 
-void add_new_employee(Employee new_employee){
+int add_new_employee(Employee new_employee){
     char filepath[FPATH_SIZE];
 
     int new_employee_id = get_new_count(C_EMPLOYEE);
@@ -22,6 +22,7 @@ void add_new_employee(Employee new_employee){
         write_employee(new_employee);
         printf("New employee created with ID: %d\n", new_employee_id);
     }
+    return new_employee_id;
 }
 void modify_user_details(int user_id, char* new_username, char* new_password){
     

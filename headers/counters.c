@@ -52,3 +52,21 @@ int get_new_count(int id){
     close_file(fd);
     return counter;
 }
+
+void reset_counters(){
+    int counter = 1;
+    for (int i = 0; i < 6; i++)
+    {
+        char filepath[FPATH_SIZE];
+        get_counter_file(i+1, filepath, sizeof(filepath));
+
+        int fd = open_file(filepath, O_RDWR|O_CREAT);
+
+        lseek(fd, 0, SEEK_SET);
+        int status = write(fd, &counter, sizeof(int));
+        if (status == -1) {
+            perror("Writing to file failed"); 
+        }   
+    }
+    
+}

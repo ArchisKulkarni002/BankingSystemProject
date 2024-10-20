@@ -90,6 +90,7 @@ int process_client(int client_fd) {
     {
         int operation;
         char password_old[50], new_password[50], new_password1[50];
+        char message[2048];
         switch (role)
         {
         case C_CUSTOMER:
@@ -115,6 +116,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &deposit, sizeof(float));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 3:
                     float withdraw;
@@ -124,6 +127,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &withdraw, sizeof(float));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 4:
                     float amount;
@@ -138,6 +143,8 @@ int process_client(int client_fd) {
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &rec_id, sizeof(int));
                     write(client_fd, &amount, sizeof(float));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
 
                     break;
                 case 5:
@@ -149,6 +156,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &amount1, sizeof(float));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 6:
                     
@@ -166,6 +175,8 @@ int process_client(int client_fd) {
                     write(client_fd, &password_old, sizeof(password_old));
                     write(client_fd, &new_password, sizeof(new_password));
                     write(client_fd, &new_password1, sizeof(new_password1));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 7:
                     Feedback feedback;
@@ -177,6 +188,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &feedback, sizeof(Feedback));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 8:
                     print_transaction_history(id);
@@ -208,13 +221,15 @@ int process_client(int client_fd) {
                     scanf("%s",new_customer.username);
                     printf("Enter password: ");
                     scanf("%s",new_customer.password);
-                    new_customer.balance=0;
+                    new_customer.balance=0; 
                     new_customer.active_status=1;
 
                     operation = 5;
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &new_customer, sizeof(Customer));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 2:
                     int customer_id;
@@ -229,7 +244,10 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &customer_id, sizeof(int));
-                    write(client_fd, new_name, sizeof(new_name));
+                    write(client_fd, &new_name, sizeof(new_name));
+                    
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);write(client_fd, new_name, sizeof(new_name));
                     break;
                 case 3:
                     int status, loan_id;
@@ -245,6 +263,8 @@ int process_client(int client_fd) {
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &loan_id, sizeof(int));
                     write(client_fd, &status, sizeof(int));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 4:
                     int loan_id1;
@@ -280,6 +300,8 @@ int process_client(int client_fd) {
                     write(client_fd, &password_old, sizeof(password_old));
                     write(client_fd, &new_password, sizeof(new_password));
                     write(client_fd, &new_password1, sizeof(new_password1));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 7:
                     return 1;
@@ -308,6 +330,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &customer_id, sizeof(int));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 2:
                     int loan_id;
@@ -322,6 +346,8 @@ int process_client(int client_fd) {
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &loan_id, sizeof(int));
                     write(client_fd, &employee_id, sizeof(int));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 3:
                     int feedback_id;
@@ -355,6 +381,8 @@ int process_client(int client_fd) {
                     write(client_fd, &password_old, sizeof(password_old));
                     write(client_fd, &new_password, sizeof(new_password));
                     write(client_fd, &new_password1, sizeof(new_password1));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 5:
                     return 1;
@@ -387,6 +415,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &new_employee, sizeof(Employee));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 2:
                     int employee_id;
@@ -402,6 +432,8 @@ int process_client(int client_fd) {
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &employee_id, sizeof(int));
                     write(client_fd, new_name, sizeof(new_name));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 3:
                     int employee_id1;
@@ -412,6 +444,8 @@ int process_client(int client_fd) {
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
                     write(client_fd, &employee_id1, sizeof(int));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 4:
                     
@@ -429,12 +463,21 @@ int process_client(int client_fd) {
                     write(client_fd, &password_old, sizeof(password_old));
                     write(client_fd, &new_password, sizeof(new_password));
                     write(client_fd, &new_password1, sizeof(new_password1));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 case 5:
                     return 1;
                     break;
                 case 6:
                     return 0;
+                    break;
+                case 7:
+                    operation=20;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    read(client_fd, message, sizeof(char[2048]));
+                    print_status(message);
                     break;
                 
                 default:

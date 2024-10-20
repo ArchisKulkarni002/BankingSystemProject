@@ -37,7 +37,7 @@ void employee_login(){
     //             write_employee(c);
 
 }
-void add_new_customer(Customer new_customer){
+int add_new_customer(Customer new_customer){
     char filepath[FPATH_SIZE];
     
     int new_customer_id = get_new_count(C_CUSTOMER);
@@ -52,7 +52,7 @@ void add_new_customer(Customer new_customer){
         printf("New customer created with ID: %d\n", new_customer_id);
     }
 
-    
+    return new_customer.id;
 }
 void modify_customer_details(int customer_id, Customer updated_customer){    
     write_customer(updated_customer);

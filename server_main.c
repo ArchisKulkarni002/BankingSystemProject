@@ -17,6 +17,7 @@
 
 void handle_client(int client_socket);
 int authenticate_user(int role, int id, char *username, char *password);
+void send_response(int client_socket, char* message, char* response);
 void perform_operation(int client_socket, int operation);
 
 int main() {
@@ -116,9 +117,16 @@ int authenticate_user(int role, int id, char *username, char *password) {
     }
 }
 
+void send_response(int client_socket, char* message, char* response){
+    snprintf(message, sizeof(char[2048]), "%s", response);
+    write(client_socket, message, sizeof(char[2048]));
+}
+
 void perform_operation(int client_socket, int operation){
     int id;
     char password_old[50], new_password[50], new_password1[50];
+    char message[2048];
+    char temp[2048];
     switch (operation) {
         case 1:
             read(client_socket, &id, sizeof(int));
@@ -130,12 +138,14 @@ void perform_operation(int client_socket, int operation){
             read(client_socket, &id, sizeof(int));
             read(client_socket, &deposit, sizeof(float));
             deposit_money(id, deposit);
+            send_response(client_socket,message,"Amount deposited successfully.");
             break;
         case 3:
             float withdraw;
             read(client_socket, &id, sizeof(int));
             read(client_socket, &withdraw, sizeof(float));
             withdraw_money(id, withdraw);
+            send_response(client_socket,message,"Amount withdrawn successfully.");
             break;
         case 4:
             int rec_id;
@@ -144,12 +154,16 @@ void perform_operation(int client_socket, int operation){
             read(client_socket, &rec_id, sizeof(int));
             read(client_socket, &amount, sizeof(float));
             transfer_funds(id, rec_id, amount);
+            send_response(client_socket,message,"Amount transfered successfully.");
             break;
         case 5:
             Customer customer;
             read(client_socket, &id, sizeof(int));
             read(client_socket, &customer, sizeof(Customer));
-            add_new_customer(customer);
+            int new_id1 = add_new_customer(customer);
+            
+            snprintf(temp, sizeof(temp), "Created new customer with id %d", new_id1);
+            send_response(client_socket,message, temp);
             break;
         case 6:
             int customer_id;
@@ -162,6 +176,8 @@ void perform_operation(int client_socket, int operation){
             snprintf(updated.username, sizeof(new_name), "%s", new_name);
             write_customer(updated);
 
+            send_response(client_socket,message,"Updated username successfully.");
+
             break;
         case 7:
             int loan_id, status;
@@ -169,6 +185,7 @@ void perform_operation(int client_socket, int operation){
             read(client_socket, &loan_id, sizeof(int));
             read(client_socket, &status, sizeof(int));
             process_loan_application(loan_id, status);
+            send_response(client_socket,message,"Updated loan application successfully.");
             break;
         case 8:
             int custmoer_id;
@@ -183,6 +200,7 @@ void perform_operation(int client_socket, int operation){
             {
                 activate_deactivate_customer(customer.id, 0);
             }
+            send_response(client_socket,message,"Updated user account status.");
             break;
         case 9:
             int loan_id1, employee_id;
@@ -190,6 +208,7 @@ void perform_operation(int client_socket, int operation){
             read(client_socket, &loan_id1, sizeof(int));
             read(client_socket, &employee_id, sizeof(int));
             assign_loan_to_employee(loan_id1, employee_id);
+            send_response(client_socket,message,"Loan assigned to employee.");
             break;
         case 10:
             int feedback_id;
@@ -197,12 +216,15 @@ void perform_operation(int client_socket, int operation){
             read(client_socket, &loan_id, sizeof(int));
             read(client_socket, &feedback_id, sizeof(int));
             Feedback feedback = read_feedback(feedback_id);
+            write(client_socket, &feedback, sizeof(Feedback));
             break;
         case 11:
             Employee employee;
             read(client_socket, &id, sizeof(int));
             read(client_socket, &employee, sizeof(Employee));
-            add_new_employee(employee);
+            int new_id=add_new_employee(employee);
+            snprintf(temp, sizeof(temp), "Created new employee with id %d", new_id);
+            send_response(client_socket,message, temp);
             break;
         case 12:
             float amount1;
@@ -217,6 +239,8 @@ void perform_operation(int client_socket, int operation){
             loan.amount=amount1;
 
             write_loan(loan.loan_id, loan);
+            snprintf(temp, sizeof(temp), "Created new loan with id %d", loan.loan_id);
+            send_response(client_socket,message, temp);
 
             break;
         case 13:
@@ -225,6 +249,8 @@ void perform_operation(int client_socket, int operation){
             read(client_socket, &feedback1, sizeof(Feedback));
             feedback1.feedback_id = get_new_count(C_FEEDBACK);
             write_feedback(feedback1.feedback_id, feedback1);
+            snprintf(temp, sizeof(temp), "Created new feedback with id %d", feedback1.feedback_id);
+            send_response(client_socket,message, temp);
             break;
         case 14:
             int employee_id2;
@@ -236,6 +262,7 @@ void perform_operation(int client_socket, int operation){
             Employee updated1 = read_employee(employee_id2);
             snprintf(updated1.username, sizeof(new_name1), "%s", new_name1);
             write_employee(updated1);
+            send_response(client_socket,message, "Updated the employee details.");
             break;
         case 15:
             int employee_id1;
@@ -247,6 +274,8 @@ void perform_operation(int client_socket, int operation){
             new_manager = *(Manager*)&updated2;
             new_manager.id = get_new_count(C_MANAGER);
             write_manager(new_manager);
+            snprintf(temp, sizeof(temp), "Employee with id %d has been promoted to manager with id %d", employee_id1, new_manager.id);
+            send_response(client_socket,message, temp);
             break;
         case 16:
             read(client_socket, &id, sizeof(int));
@@ -256,15 +285,16 @@ void perform_operation(int client_socket, int operation){
             Customer pass = read_customer(id);
             if (strcmp(pass.password,password_old)!=0)
             {
-                printf("Incorrect password, exiting.");
+                send_response(client_socket,message, "Incorrect password, try again.");
             }else{
 
                 if (strcmp(new_password,new_password1)!=0)
                 {
-                    printf("Passwords did not match, exiting.");
+                    send_response(client_socket,message, "Passwords dont match.");
                 }else{
                     snprintf(pass.password, sizeof(new_password), "%s", new_password);
                     write_customer(pass);
+                    send_response(client_socket,message, "Password updated successfully.");
                 }
             }
             break;
@@ -276,15 +306,16 @@ void perform_operation(int client_socket, int operation){
             Employee pass1 = read_employee(id);
             if (strcmp(pass1.password,password_old)!=0)
             {
-                printf("Incorrect password, exiting.");
+                send_response(client_socket,message, "Incorrect password, try again.");
             }else{
 
                 if (strcmp(new_password,new_password1)!=0)
                 {
-                    printf("Passwords did not match, exiting.");
+                    send_response(client_socket,message, "Passwords dont match.");
                 }else{
                     snprintf(pass1.password, sizeof(new_password), "%s", new_password);
                     write_employee(pass1);
+                    send_response(client_socket,message, "Password updated successfully.");
                 }
             }
             break;
@@ -296,15 +327,16 @@ void perform_operation(int client_socket, int operation){
             Manager pass2 = read_manager(id);
             if (strcmp(pass2.password,password_old)!=0)
             {
-                printf("Incorrect password, exiting.");
+                send_response(client_socket,message, "Incorrect password, try again.");
             }else{
 
                 if (strcmp(new_password,new_password1)!=0)
                 {
-                    printf("Passwords did not match, exiting.");
+                    send_response(client_socket,message, "Passwords dont match.");
                 }else{
                     snprintf(pass2.password, sizeof(new_password), "%s", new_password);
                     write_manager(pass2);
+                    send_response(client_socket,message, "Password updated successfully.");
                 }
             }
             break;
@@ -316,20 +348,22 @@ void perform_operation(int client_socket, int operation){
             Admin pass3 = read_admin(id);
             if (strcmp(pass3.password,password_old)!=0)
             {
-                printf("Incorrect password, exiting.");
+                send_response(client_socket,message, "Incorrect password, try again.");
             }else{
 
                 if (strcmp(new_password,new_password1)!=0)
                 {
-                    printf("Passwords did not match, exiting.");
+                    send_response(client_socket,message, "Passwords dont match.");
                 }else{
                     snprintf(pass3.password, sizeof(new_password), "%s", new_password);
                     write_admin(pass3);
+                    send_response(client_socket,message, "Password updated successfully.");
                 }
             }
             break;
         case 20:
-            // Code for case 20
+            reset_counters();
+            send_response(client_socket,message, "Counters reset successfully.");
             break;
         default:
             // Code for default case

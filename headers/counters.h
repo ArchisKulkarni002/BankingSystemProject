@@ -11,5 +11,6 @@
 
 void get_counter_file(int id, char* filepath, int size);
 int get_new_count(int id);
+void reset_counters();
 
 #endif // COUNTERS_H
