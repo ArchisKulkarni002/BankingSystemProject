@@ -17,7 +17,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-void process_client(int client_fd);
+int process_client(int client_fd);
 
 int main() {
     int client_fd, new_socket;
@@ -47,11 +47,17 @@ int main() {
 
     print_status("Connected to the bank server.");
 
-    process_client(client_fd);
+    int status=1;
+    while (status)
+    {
+        status = process_client(client_fd);
+    }
+    
+    
 
 }
 
-void process_client(int client_fd) {
+int process_client(int client_fd) {
     char username[50], password[50];
     int role, id;
     print_heading("Welcome to Laxmi Chit Fund! Please login to continue");
@@ -80,16 +86,16 @@ void process_client(int client_fd) {
     }
 
     // perform operations based on roles
-    int is_session_active=1;
-    while (is_session_active)
+    while (1)
     {
         int operation;
+        char password_old[50], new_password[50], new_password1[50];
         switch (role)
         {
         case C_CUSTOMER:
             Customer customer = read_customer(id);
             print_customer_menu();
-            printf("Enter your choice:");
+            
             scanf("%d", &operation);
             switch (operation)
             {
@@ -135,16 +141,51 @@ void process_client(int client_fd) {
 
                     break;
                 case 5:
-                    
+                    float amount1;
+                    printf("Enter amount for loan: ");
+                    scanf("%f",&amount1);
+
+                    operation = 12;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &amount1, sizeof(float));
                     break;
                 case 6:
                     
+                    printf("Enter current password: ");
+                    scanf("%s", password_old);
+                    
+                    printf("Enter new password: ");
+                    scanf("%s", new_password);
+                    printf("Enter new password again1: ");
+                    scanf("%s", new_password1);
+
+                    operation=16;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &password_old, sizeof(password_old));
+                    write(client_fd, &new_password, sizeof(new_password));
+                    write(client_fd, &new_password1, sizeof(new_password1));
+                    break;
+                case 7:
+                    Feedback feedback;
+                    feedback.customer_id=id;
+                    printf("Enter feedback: ");
+                    scanf(" %[^\n]%*c",feedback.feedback_msg);
+
+                    operation = 13;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &feedback, sizeof(Feedback));
                     break;
                 case 8:
                     print_transaction_history(id);
                     break;
+                case 9:
+                    return 1;
+                    break;
                 case 10:
-                    is_session_active=0;
+                    return 0;
                     break;
                 
                 default:
@@ -155,7 +196,7 @@ void process_client(int client_fd) {
         case C_EMPLOYEE:
             Employee employee = read_employee(id);
             print_employee_menu();
-            printf("Enter your choice:");
+            
             scanf("%d", &operation);
 
             switch (operation)
@@ -176,7 +217,19 @@ void process_client(int client_fd) {
                     write(client_fd, &new_customer, sizeof(Customer));
                     break;
                 case 2:
+                    int customer_id;
+                    printf("Enter customer id to update: ");
+                    scanf("%d",&customer_id);
+                    char new_name[50];
+                    print_subheading("Fill the details for new customer");
+                    printf("Enter username: ");
+                    scanf("%s",new_name);
 
+                    operation = 6;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &customer_id, sizeof(int));
+                    write(client_fd, new_name, sizeof(new_name));
                     break;
                 case 3:
                     int status, loan_id;
@@ -206,16 +259,33 @@ void process_client(int client_fd) {
                     printf("Status: %d\n", loan.status);
                     break;
                 case 5:
-                    int customer_id;
+                    int customer_id1;
                     printf("Enter customer id for transaction history: ");
-                    scanf("%d",&customer_id);
-                    print_transaction_history(customer_id);
+                    scanf("%d",&customer_id1);
+                    print_transaction_history(customer_id1);
                     break;
                 case 6:
                     
+                    printf("Enter current password: ");
+                    scanf("%s", password_old);
+                    
+                    printf("Enter new password: ");
+                    scanf("%s", new_password);
+                    printf("Enter new password again1: ");
+                    scanf("%s", new_password1);
+
+                    operation=17;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &password_old, sizeof(password_old));
+                    write(client_fd, &new_password, sizeof(new_password));
+                    write(client_fd, &new_password1, sizeof(new_password1));
+                    break;
+                case 7:
+                    return 1;
                     break;
                 case 8:
-                    is_session_active=0;
+                    return 0;
                     break;
                 
                 default:
@@ -225,7 +295,7 @@ void process_client(int client_fd) {
         case C_MANAGER:
             Manager manager = read_manager(id);
             print_manager_menu();
-            printf("Enter your choice:");
+            
             scanf("%d", &operation);
             switch (operation)
             {
@@ -270,13 +340,27 @@ void process_client(int client_fd) {
                     printf("Feedback: %s\n",feedback.feedback_msg);
                     break;
                 case 4:
+                    
+                    printf("Enter current password: ");
+                    scanf("%s", password_old);
+                    
+                    printf("Enter new password: ");
+                    scanf("%s", new_password);
+                    printf("Enter new password again1: ");
+                    scanf("%s", new_password1);
 
+                    operation=18;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &password_old, sizeof(password_old));
+                    write(client_fd, &new_password, sizeof(new_password));
+                    write(client_fd, &new_password1, sizeof(new_password1));
                     break;
                 case 5:
-                    
+                    return 1;
                     break;
                 case 6:
-                    is_session_active=0;
+                    return 0;
                     break;
                 
                 default:
@@ -286,7 +370,7 @@ void process_client(int client_fd) {
         case C_ADMIN:
             Admin admin = read_admin(id);
             print_admin_menu();
-            printf("Enter your choice:");
+            
             scanf("%d", &operation);
             switch (operation)
             {
@@ -305,19 +389,52 @@ void process_client(int client_fd) {
                     write(client_fd, &new_employee, sizeof(Employee));
                     break;
                 case 2:
-                    
+                    int employee_id;
+                    printf("Enter employee id to update: ");
+                    scanf("%d",&employee_id);
+                    char new_name[50];
+                    print_subheading("Fill the details for new employee");
+                    printf("Enter username: ");
+                    scanf("%s",new_name);
+
+                    operation = 14;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &employee_id, sizeof(int));
+                    write(client_fd, new_name, sizeof(new_name));
                     break;
                 case 3:
+                    int employee_id1;
+                    printf("Enter employee id to promote to manager: ");
+                    scanf("%d",&employee_id1);
 
+                    operation = 15;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &employee_id1, sizeof(int));
                     break;
                 case 4:
+                    
+                    printf("Enter current password: ");
+                    scanf("%s", password_old);
+                    
+                    printf("Enter new password: ");
+                    scanf("%s", new_password);
+                    printf("Enter new password again1: ");
+                    scanf("%s", new_password1);
 
+                    operation=19;
+                    write(client_fd, &operation, sizeof(int));
+                    write(client_fd, &id, sizeof(int));
+                    write(client_fd, &password_old, sizeof(password_old));
+                    write(client_fd, &new_password, sizeof(new_password));
+                    write(client_fd, &new_password1, sizeof(new_password1));
                     break;
                 case 5:
-                    
+                    return 1;
                     break;
                 case 6:
-                    is_session_active=0;
+                    return 0;
                     break;
                 
                 default:

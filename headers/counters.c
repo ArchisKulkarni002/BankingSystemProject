@@ -2,10 +2,11 @@
 #include "file_utils.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void get_counter_file(int id, char* filepath, int size){
     switch (id){
-    case 0:
+    case 4:
         snprintf(filepath, size, "counters/%s", "admin_counter");
         break;
     case 1:
@@ -14,13 +15,13 @@ void get_counter_file(int id, char* filepath, int size){
     case 2:
         snprintf(filepath, size, "counters/%s", "employee_counter");
         break;
-    case 3:
+    case 6:
         snprintf(filepath, size, "counters/%s", "feedback_counter");
         break;
-    case 4:
+    case 5:
         snprintf(filepath, size, "counters/%s", "loan_counter");
         break;
-    case 5:
+    case 3:
         snprintf(filepath, size, "counters/%s", "manager_counter");
         break;
     
@@ -36,11 +37,17 @@ int get_new_count(int id){
     int fd = open_file(filepath, O_RDWR|O_CREAT);   
 
     int counter;
-    read_file(fd, (char*)&counter, sizeof(int));
+    int status = read(fd, &counter, sizeof(int));
+    if (status == -1) {
+        perror("Reading to file failed"); 
+    }
 
     counter++;
     lseek(fd, 0, SEEK_SET);
-    write_file(fd, (char*)&counter, sizeof(int));
+    status = write(fd, &counter, sizeof(int));
+    if (status == -1) {
+        perror("Writing to file failed"); 
+    }
 
     close_file(fd);
     return counter;

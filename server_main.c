@@ -2,6 +2,7 @@
 #include "headers/manager.h"
 #include "headers/employee.h"
 #include "headers/admin.h"
+#include "headers/loans.h"
 #include "headers/file_utils.h"
 #include "headers/menus.h"
 #include "headers/counters.h"
@@ -47,6 +48,7 @@ int main() {
 
 void handle_client(int client_socket) {
     char username[50], password[50];
+    
     int role, id;
 
     // Read login credentials from client
@@ -116,6 +118,7 @@ int authenticate_user(int role, int id, char *username, char *password) {
 
 void perform_operation(int client_socket, int operation){
     int id;
+    char password_old[50], new_password[50], new_password1[50];
     switch (operation) {
         case 1:
             read(client_socket, &id, sizeof(int));
@@ -149,7 +152,16 @@ void perform_operation(int client_socket, int operation){
             add_new_customer(customer);
             break;
         case 6:
-            // Code for case 6
+            int customer_id;
+            char new_name[50];
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &customer_id, sizeof(int));
+            read(client_socket, &new_name, sizeof(new_name));
+
+            Customer updated = read_customer(customer_id);
+            snprintf(updated.username, sizeof(new_name), "%s", new_name);
+            write_customer(updated);
+
             break;
         case 7:
             int loan_id, status;
@@ -193,28 +205,128 @@ void perform_operation(int client_socket, int operation){
             add_new_employee(employee);
             break;
         case 12:
-            
+            float amount1;
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &amount1, sizeof(float));
+
+            Loan loan;
+            loan.loan_id = get_new_count(C_LOAN);
+            loan.customer_id=id;
+            loan.assigned_employee_id=0;
+            loan.status=1;
+            loan.amount=amount1;
+
+            write_loan(loan.loan_id, loan);
+
             break;
         case 13:
-            // Code for case 13
+            Feedback feedback1;
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &feedback1, sizeof(Feedback));
+            feedback1.feedback_id = get_new_count(C_FEEDBACK);
+            write_feedback(feedback1.feedback_id, feedback1);
             break;
         case 14:
-            // Code for case 14
+            int employee_id2;
+            char new_name1[50];
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &employee_id2, sizeof(int));
+            read(client_socket, &new_name1, sizeof(new_name1));
+
+            Employee updated1 = read_employee(employee_id2);
+            snprintf(updated1.username, sizeof(new_name1), "%s", new_name1);
+            write_employee(updated1);
             break;
         case 15:
-            // Code for case 15
+            int employee_id1;
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &employee_id1, sizeof(int));
+
+            Employee updated2 = read_employee(employee_id1);
+            Manager new_manager;
+            new_manager = *(Manager*)&updated2;
+            new_manager.id = get_new_count(C_MANAGER);
+            write_manager(new_manager);
             break;
         case 16:
-            // Code for case 16
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &password_old, sizeof(password_old));
+            read(client_socket, &new_password, sizeof(new_password));
+            read(client_socket, &new_password1, sizeof(new_password1));
+            Customer pass = read_customer(id);
+            if (strcmp(pass.password,password_old)!=0)
+            {
+                printf("Incorrect password, exiting.");
+            }else{
+
+                if (strcmp(new_password,new_password1)!=0)
+                {
+                    printf("Passwords did not match, exiting.");
+                }else{
+                    snprintf(pass.password, sizeof(new_password), "%s", new_password);
+                    write_customer(pass);
+                }
+            }
             break;
         case 17:
-            // Code for case 17
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &password_old, sizeof(password_old));
+            read(client_socket, &new_password, sizeof(new_password));
+            read(client_socket, &new_password1, sizeof(new_password1));
+            Employee pass1 = read_employee(id);
+            if (strcmp(pass1.password,password_old)!=0)
+            {
+                printf("Incorrect password, exiting.");
+            }else{
+
+                if (strcmp(new_password,new_password1)!=0)
+                {
+                    printf("Passwords did not match, exiting.");
+                }else{
+                    snprintf(pass1.password, sizeof(new_password), "%s", new_password);
+                    write_employee(pass1);
+                }
+            }
             break;
         case 18:
-            // Code for case 18
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &password_old, sizeof(password_old));
+            read(client_socket, &new_password, sizeof(new_password));
+            read(client_socket, &new_password1, sizeof(new_password1));
+            Manager pass2 = read_manager(id);
+            if (strcmp(pass2.password,password_old)!=0)
+            {
+                printf("Incorrect password, exiting.");
+            }else{
+
+                if (strcmp(new_password,new_password1)!=0)
+                {
+                    printf("Passwords did not match, exiting.");
+                }else{
+                    snprintf(pass2.password, sizeof(new_password), "%s", new_password);
+                    write_manager(pass2);
+                }
+            }
             break;
         case 19:
-            // Code for case 19
+            read(client_socket, &id, sizeof(int));
+            read(client_socket, &password_old, sizeof(password_old));
+            read(client_socket, &new_password, sizeof(new_password));
+            read(client_socket, &new_password1, sizeof(new_password1));
+            Admin pass3 = read_admin(id);
+            if (strcmp(pass3.password,password_old)!=0)
+            {
+                printf("Incorrect password, exiting.");
+            }else{
+
+                if (strcmp(new_password,new_password1)!=0)
+                {
+                    printf("Passwords did not match, exiting.");
+                }else{
+                    snprintf(pass3.password, sizeof(new_password), "%s", new_password);
+                    write_admin(pass3);
+                }
+            }
             break;
         case 20:
             // Code for case 20
