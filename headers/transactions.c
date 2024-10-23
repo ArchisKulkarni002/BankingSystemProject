@@ -59,15 +59,15 @@ void print_transaction_history(int customer_id){
         }
         if (transaction.sender_id==transaction.receiver_id){
             if (transaction.type==1){
-                printf("Deposited %f rupees.\n", transaction.amount);
+                printf("## Deposited %f rupees.\n", transaction.amount);
             }else if (transaction.type==-1){
-                printf("Withdrawn %f rupees.\n", transaction.amount);
+                printf("## Withdrawn %f rupees.\n", transaction.amount);
             }          
         }else{
             if (transaction.type==-1){
-                printf("Sent %f rupees to account number %d.\n", transaction.amount, transaction.receiver_id);
+                printf("## Sent %f rupees to account number %d.\n", transaction.amount, transaction.receiver_id);
             }else if (transaction.type==1){
-                printf("Received %f rupees from account number %d.\n", transaction.amount, transaction.sender_id);
+                printf("## Received %f rupees from account number %d.\n", transaction.amount, transaction.sender_id);
             }
         }
         

@@ -91,12 +91,12 @@ int process_client(int client_fd) {
         int operation;
         char password_old[50], new_password[50], new_password1[50];
         char message[2048];
+        
         switch (role)
         {
         case C_CUSTOMER:
             Customer customer = read_customer(id);
             print_customer_menu();
-            
             scanf("%d", &operation);
             switch (operation)
             {
@@ -195,6 +195,8 @@ int process_client(int client_fd) {
                     print_transaction_history(id);
                     break;
                 case 9:
+                    operation=21;
+                    write(client_fd, &operation, sizeof(int));
                     return 1;
                     break;
                 case 10:
@@ -304,6 +306,8 @@ int process_client(int client_fd) {
                     print_status(message);
                     break;
                 case 7:
+                    operation=21;
+                    write(client_fd, &operation, sizeof(int));
                     return 1;
                     break;
                 case 8:
@@ -358,7 +362,7 @@ int process_client(int client_fd) {
                     operation = 10;
                     write(client_fd, &operation, sizeof(int));
                     write(client_fd, &id, sizeof(int));
-                    write(client_fd, &loan_id, sizeof(int));
+                    write(client_fd, &feedback_id, sizeof(int));
                     read(client_fd, &feedback, sizeof(Feedback));
 
                     printf("Feedback number: %d\n",feedback.feedback_id);
@@ -385,6 +389,8 @@ int process_client(int client_fd) {
                     print_status(message);
                     break;
                 case 5:
+                    operation=21;
+                    write(client_fd, &operation, sizeof(int));
                     return 1;
                     break;
                 case 6:
@@ -467,6 +473,8 @@ int process_client(int client_fd) {
                     print_status(message);
                     break;
                 case 5:
+                    operation=21;
+                    write(client_fd, &operation, sizeof(int));
                     return 1;
                     break;
                 case 6:

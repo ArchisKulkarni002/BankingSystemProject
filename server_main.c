@@ -213,7 +213,6 @@ void perform_operation(int client_socket, int operation){
         case 10:
             int feedback_id;
             read(client_socket, &id, sizeof(int));
-            read(client_socket, &loan_id, sizeof(int));
             read(client_socket, &feedback_id, sizeof(int));
             Feedback feedback = read_feedback(feedback_id);
             write(client_socket, &feedback, sizeof(Feedback));
@@ -365,6 +364,8 @@ void perform_operation(int client_socket, int operation){
             reset_counters();
             send_response(client_socket,message, "Counters reset successfully.");
             break;
+        case 21:
+            handle_client(client_socket);
         default:
             // Code for default case
             break;
