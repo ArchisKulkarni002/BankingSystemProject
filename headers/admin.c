@@ -1,3 +1,7 @@
+/*
+ * Created by: Archis Kulkarni
+ * Project Description: Bank Management System.
+ */
 #include "admin.h"
 #include "employee.h"
 #include "counters.h"

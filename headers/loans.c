@@ -1,3 +1,7 @@
+/*
+ * Created by: Archis Kulkarni
+ * Project Description: Bank Management System.
+ */
 #include "loans.h"
 #include "file_utils.h"
 #include <fcntl.h>

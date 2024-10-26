@@ -1,3 +1,7 @@
+/*
+ * Created by: Archis Kulkarni
+ * Project Description: Bank Management System.
+ */
 #include "customer.h"
 #include "transactions.h"
 #include "loans.h"
